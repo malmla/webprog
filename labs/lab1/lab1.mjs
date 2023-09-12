@@ -2,13 +2,14 @@
 /**
  * Reflection question 1
  * your answer goes here
+ * truthy/falsy - in this case undefined = falsy (falsy if undefined, null, "", 0, -0, NaN, false)
  */
 
 import inventory from './inventory.mjs';
-console.log('\n=== beginning of printout ================================')
+console.log('\n=== beginning of printout ================================');
 console.log('inventory:', inventory);
 
-console.log('\n--- Object.keys() ---------------------------------------')
+console.log('\n--- Object.keys() ---------------------------------------');
 const names = Object.keys(inventory);
 names
   .sort((a, b) => a.localeCompare(b, "sv", { sensitivity: 'case' }))
@@ -20,6 +21,12 @@ for (const name in inventory) {
 }
 /**
  * Reflection question 2
+ * when will 'in' and 'forEach' give different outputs?
+ * 'in' looks at inherited enumerable properties wheras 'forEach' does not,
+ * if 'inventory' had a prototype with more enumerable properties there would be different outputs
+ * Object.defineProperty(obj, "nonEnum", {enumerable: false,}); to set enumerable t/f
+ * why are inherited functions not printed?
+ * functions are not enumerable by default
  */
 
 console.log('\n--- Assignment 1 ---------------------------------------')
