@@ -32,7 +32,11 @@ for (const name in inventory) {
 console.log('\n--- Assignment 1 ---------------------------------------')
 
 function makeOptions(inv, prop) {
-  return 'TODO';
+  let options = Object.entries(inv);
+  return options
+    .filter(option => option[1][prop])
+    .map(option => `<option value="${option[0]}" key="${option[0]}"> ${option[0]}, ${option[1]['price']} kr</option>`)
+    .reduce((accum, curr) => accum + '\n' + curr);
 }
 
 console.log(makeOptions(inventory, 'foundation'));
