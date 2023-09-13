@@ -73,10 +73,18 @@ myCaesarSalad.remove('Gurka');
 console.log(JSON.stringify(myCaesarSalad) + '\n');
 
 console.log('\n--- Assignment 3 ---------------------------------------')
+
 Salad.prototype.getPrice = function() {
-  let total = Object.values(ingredients);
-  return total.reduce();
+  let total = Object.values(this.ingredients);
+  return total
+    .map((x) => x.price)
+    .reduce((accum, price) => accum + price);
 };
+
+Salad.prototype.count = function(prop) {
+  let count = Object.values(this.ingredients);
+  return Object.values(count.filter(p => p[prop])).length;
+}
 
 console.log('En ceasarsallad kostar ' + myCaesarSalad.getPrice() + 'kr');
 // En ceasarsallad kostar 45kr
