@@ -46,10 +46,7 @@ class Salad {
   ingredients;
 
   constructor(salad) {
-    if (salad instanceof Salad) {
-      this.ingredients = salad.ingredients;
-    }
-    this.ingredients = {};
+    salad instanceof Salad ? this.ingredients = salad.ingredients : this.ingredients = {};
   }
 
   add(name, properties) {
