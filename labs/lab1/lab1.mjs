@@ -13,9 +13,9 @@ console.log('\n--- Object.keys() ---------------------------------------');
 const names = Object.keys(inventory);
 names
   .sort((a, b) => a.localeCompare(b, "sv", { sensitivity: 'case' }))
-  .forEach(name => console.log(name));
+  .forEach((name) => console.log(name));
 
-console.log('\n--- for ... in ---------------------------------------')
+console.log('\n--- for ... in ---------------------------------------');
 for (const name in inventory) {
   console.log(name);
 }
@@ -29,7 +29,7 @@ for (const name in inventory) {
  * functions are not enumerable by default
  */
 
-console.log('\n--- Assignment 1 ---------------------------------------')
+console.log('\n--- Assignment 1 ---------------------------------------');
 
 function makeOptions(inv, prop) {
   let options = Object.entries(inv);
@@ -41,11 +41,14 @@ function makeOptions(inv, prop) {
 
 console.log(makeOptions(inventory, 'foundation'));
 
-console.log('\n--- Assignment 2 ---------------------------------------')
+console.log('\n--- Assignment 2 ---------------------------------------');
 class Salad {
   ingredients;
 
-  constructor() {
+  constructor(salad) {
+    if (salad instanceof Salad) {
+      this.ingredients = salad.ingredients;
+    }
     this.ingredients = {};
   }
 
@@ -113,13 +116,13 @@ console.log('check 4: ' + (Salad.prototype + ' ' + Object.getPrototypeOf(Salad))
 property?
   *
   * Which objects have a prototype property? How do you get the next object in
-the prototype chain? 
-  * chaining through until null, 
-  * 
+the prototype chain?
+  * chaining through until null,
+  *
   */
 
 console.log('\n--- Assignment 4 ---------------------------------------')
-/*
+
 const singleText = JSON.stringify(myCaesarSalad);
 const arrayText = JSON.stringify([myCaesarSalad, myCaesarSalad]);
 
@@ -135,7 +138,7 @@ console.log('Salad.parse(arrayText)\n' + JSON.stringify(arrayCopy));
 singleCopy.add('Gurka', inventory['Gurka']);
 console.log('originalet kostar ' + myCaesarSalad.getPrice() + ' kr');
 console.log('kopian med gurka kostar ' + singleCopy.getPrice() + ' kr');
-*/
+
 console.log('\n--- Assignment 5 ---------------------------------------')
 /*
 let myGourmetSalad = new GourmetSalad()
