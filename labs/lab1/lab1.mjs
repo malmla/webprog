@@ -93,7 +93,7 @@ console.log('En ceasarsallad har ' + myCaesarSalad.count('lactose') + ' ingredie
 console.log('En ceasarsallad har ' + myCaesarSalad.count('extra') + ' tillbehör');
 // En ceasarsallad har 3 tillbehör
 
-/*
+
 console.log('\n--- reflection question 3 ---------------------------------------')
 console.log('typeof Salad: ' + typeof Salad);
 console.log('typeof Salad.prototype: ' + typeof Salad.prototype);
@@ -103,7 +103,21 @@ console.log('typeof myCaesarSalad.prototype: ' + typeof myCaesarSalad.prototype)
 console.log('check 1: ' + (Salad.prototype === Object.getPrototypeOf(Salad)));
 console.log('check 2: ' + (Salad.prototype === Object.getPrototypeOf(myCaesarSalad)));
 console.log('check 3: ' + (Object.prototype === Object.getPrototypeOf(Salad.prototype)));
-*/
+
+console.log('check 4: ' + (Salad.prototype + ' ' + Object.getPrototypeOf(Salad)));
+
+/**
+  * How are classes and inherited properties represented in JavaScript?
+  *
+  * What is the difference between an object’s prototype chain and having a prototype
+property?
+  *
+  * Which objects have a prototype property? How do you get the next object in
+the prototype chain? 
+  * chaining through until null, 
+  * 
+  */
+
 console.log('\n--- Assignment 4 ---------------------------------------')
 /*
 const singleText = JSON.stringify(myCaesarSalad);
