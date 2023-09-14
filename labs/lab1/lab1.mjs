@@ -6,8 +6,9 @@
  */
 
 import inventory from './inventory.mjs';
+import { v4 as uuidv4 } from 'uuid';
 console.log('\n=== beginning of printout ================================');
-console.log('inventory:', inventory);
+/* console.log('inventory:', inventory);
 
 console.log('\n--- Object.keys() ---------------------------------------');
 const names = Object.keys(inventory);
@@ -18,7 +19,8 @@ names
 console.log('\n--- for ... in ---------------------------------------');
 for (const name in inventory) {
   console.log(name);
-}
+} */
+
 /** R2
  * Reflection question 2
  * when will 'in' and 'forEach' give different outputs?
@@ -44,9 +46,20 @@ console.log(makeOptions(inventory, 'foundation'));
 console.log('\n--- Assignment 2 ---------------------------------------');
 class Salad {
   ingredients;
+  id;
+  static instanceCounter = 0;
+  #secretProperty = `hidden`;
+  uuid;
 
-  constructor(salad) {
+  constructor(salad, oldID, oldUUID) {
     salad instanceof Salad ? this.ingredients = salad.ingredients : this.ingredients = {};
+    // Object.defineProperty(this, 'id', {
+    //   value: oldID || `salad_` + Salad.instanceCounter++,
+    //   writable: false,
+    // });
+    this.id = oldID || `salad_` + Salad.instanceCounter++;
+    const uuid = oldUUID || uuidv4();
+    this.uuid = uuid;
   }
 
   add(name, properties) {
@@ -68,7 +81,7 @@ class Salad {
         salads = salads.concat(this.parse(JSON.stringify(inputs[salad]))); //måste finnas ett bättre sätt att göra detta på
       }
     } else {
-      salads = new Salad();
+      salads = new Salad(this.salad = undefined, this.oldID = inputs.id, this.oldUUID = inputs.uuid);
       for(const name in inputs.ingredients) {
         salads.add(name, inputs.ingredients[name]);
       }
@@ -111,7 +124,7 @@ console.log('En ceasarsallad har ' + myCaesarSalad.count('extra') + ' tillbehör
 // En ceasarsallad har 3 tillbehör
 
 
-console.log('\n--- reflection question 3 ---------------------------------------') 
+console.log('\n--- reflection question 3 ---------------------------------------')
 {
   console.log('typeof Salad: ' + typeof Salad);
   console.log('typeof Salad.prototype: ' + typeof Salad.prototype);
@@ -126,14 +139,14 @@ console.log('\n--- reflection question 3 ---------------------------------------
 
 /** Refl3
   * How are classes and inherited properties represented in JavaScript?
-  * 
+  *
   * classes are functions, inherited properties 'up' prototype chain
   *
   * What is the difference between an object’s prototype chain and having a prototype
 property?
-  * 
+  *
   * Not sure
-  * 
+  *
   * Which objects have a prototype property? How do you get the next object in
 the prototype chain?
   * chaining through until null,
@@ -162,7 +175,32 @@ console.log('kopian med gurka kostar ' + singleCopy.getPrice() + ' kr');
 }
 
 console.log('\n--- Assignment 5 ---------------------------------------')
-/*
+
+class GourmetSalad extends Salad {
+  //specify size when add ingredient, default 1 (optional third parameter)
+  //if same ingredient added again, add size (new size = old size + added size)
+  //getPrize = size * prize
+  constructor(salad) {
+    super(salad);
+    this.ingredients = {...super.ingredients};
+    return this;
+  }
+
+  add(name, properties, addSize = 1) {
+    let propertiesWithSize = this.ingredients[name] || {...properties};
+    propertiesWithSize['size'] = propertiesWithSize['size'] + addSize || addSize;
+    super.add(name, propertiesWithSize);
+    return this;
+  }
+}
+
+GourmetSalad.prototype.getPrice = function() {
+  let total = Object.values(this.ingredients);
+  return total
+    .map((x) => x.price * x.size)
+    .reduce((accum, price) => accum + price);
+}
+
 let myGourmetSalad = new GourmetSalad()
   .add('Sallad', inventory['Sallad'], 0.5)
   .add('Kycklingfilé', inventory['Kycklingfilé'], 2)
@@ -173,19 +211,23 @@ let myGourmetSalad = new GourmetSalad()
 console.log('Min gourmetsallad med lite bacon kostar ' + myGourmetSalad.getPrice() + ' kr');
 myGourmetSalad.add('Bacon', inventory['Bacon'], 1)
 console.log('Med extra bacon kostar den ' + myGourmetSalad.getPrice() + ' kr');
-*/
+
+
 console.log('\n--- Assignment 6 ---------------------------------------')
-/*
+//myGourmetSalad.id = 1;
+
 console.log('Min gourmetsallad har id: ' + myGourmetSalad.id);
 console.log('Min gourmetsallad har uuid: ' + myGourmetSalad.uuid);
-*/
 
 /**
  * Reflection question 4
+ * se block
  */
 /**
  * Reflection question 5
+ * kommentera ur under ass6 för felmeddelande, blir bara felmeddelande i strict mode
  */
 /**
  * Reflection question 6
+ * ja det går att ha private fields
  */
