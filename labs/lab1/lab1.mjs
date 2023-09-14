@@ -1,5 +1,5 @@
 'use strict';
-/**
+/** R1
  * Reflection question 1
  * your answer goes here
  * truthy/falsy - in this case undefined = falsy (falsy if undefined, null, "", 0, -0, NaN, false)
@@ -19,7 +19,7 @@ console.log('\n--- for ... in ---------------------------------------');
 for (const name in inventory) {
   console.log(name);
 }
-/**
+/** R2
  * Reflection question 2
  * when will 'in' and 'forEach' give different outputs?
  * 'in' looks at inherited enumerable properties wheras 'forEach' does not,
@@ -52,12 +52,29 @@ class Salad {
   add(name, properties) {
     this.ingredients[name] = properties;
     return this;
-   }
+  }
 
   remove(name) {
     delete this.ingredients[name];
     return this;
-   }
+  }
+
+  static parse(json) {
+    let inputs = JSON.parse(json);
+    let salads;
+    if (Array.isArray(inputs)) {
+      salads = [];
+      for (const salad in inputs) {
+        salads = salads.concat(this.parse(JSON.stringify(inputs[salad]))); //måste finnas ett bättre sätt att göra detta på
+      }
+    } else {
+      salads = new Salad();
+      for(const name in inputs.ingredients) {
+        salads.add(name, inputs.ingredients[name]);
+      }
+    }
+    return salads;
+  }
 }
 
 let myCaesarSalad = new Salad()
@@ -94,24 +111,29 @@ console.log('En ceasarsallad har ' + myCaesarSalad.count('extra') + ' tillbehör
 // En ceasarsallad har 3 tillbehör
 
 
-console.log('\n--- reflection question 3 ---------------------------------------')
-console.log('typeof Salad: ' + typeof Salad);
-console.log('typeof Salad.prototype: ' + typeof Salad.prototype);
-console.log('typeof Salad.prototype.prototype: ' + typeof Salad.prototype.prototype);
-console.log('typeof myCaesarSalad: ' + typeof myCaesarSalad);
-console.log('typeof myCaesarSalad.prototype: ' + typeof myCaesarSalad.prototype);
-console.log('check 1: ' + (Salad.prototype === Object.getPrototypeOf(Salad)));
-console.log('check 2: ' + (Salad.prototype === Object.getPrototypeOf(myCaesarSalad)));
-console.log('check 3: ' + (Object.prototype === Object.getPrototypeOf(Salad.prototype)));
+console.log('\n--- reflection question 3 ---------------------------------------') 
+{
+  console.log('typeof Salad: ' + typeof Salad);
+  console.log('typeof Salad.prototype: ' + typeof Salad.prototype);
+  console.log('typeof Salad.prototype.prototype: ' + typeof Salad.prototype.prototype);
+  console.log('typeof myCaesarSalad: ' + typeof myCaesarSalad);
+  console.log('typeof myCaesarSalad.prototype: ' + typeof myCaesarSalad.prototype);
+  console.log('check 1: ' + (Salad.prototype === Object.getPrototypeOf(Salad)));
+  console.log('check 2: ' + (Salad.prototype === Object.getPrototypeOf(myCaesarSalad)));
+  console.log('check 3: ' + (Object.prototype === Object.getPrototypeOf(Salad.prototype)));
+}
+//console.log('check 4: ' + (Salad.prototype + ' ' + Object.getPrototypeOf(Salad)));
 
-console.log('check 4: ' + (Salad.prototype + ' ' + Object.getPrototypeOf(Salad)));
-
-/**
+/** Refl3
   * How are classes and inherited properties represented in JavaScript?
+  * 
+  * classes are functions, inherited properties 'up' prototype chain
   *
   * What is the difference between an object’s prototype chain and having a prototype
 property?
-  *
+  * 
+  * Not sure
+  * 
   * Which objects have a prototype property? How do you get the next object in
 the prototype chain?
   * chaining through until null,
@@ -119,6 +141,7 @@ the prototype chain?
   */
 
 console.log('\n--- Assignment 4 ---------------------------------------')
+{
 
 const singleText = JSON.stringify(myCaesarSalad);
 const arrayText = JSON.stringify([myCaesarSalad, myCaesarSalad]);
@@ -135,6 +158,8 @@ console.log('Salad.parse(arrayText)\n' + JSON.stringify(arrayCopy));
 singleCopy.add('Gurka', inventory['Gurka']);
 console.log('originalet kostar ' + myCaesarSalad.getPrice() + ' kr');
 console.log('kopian med gurka kostar ' + singleCopy.getPrice() + ' kr');
+
+}
 
 console.log('\n--- Assignment 5 ---------------------------------------')
 /*
