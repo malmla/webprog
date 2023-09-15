@@ -1,22 +1,17 @@
 'use strict';
 
-import inventory from './inventory.mjs';
 import { v4 as uuidv4 } from 'uuid';
 
 class Salad {
     ingredients;
     id;
-    static instanceCounter = 0;
+    static #instanceCounter = 0;
     #secretProperty = `hidden`;
     uuid;
   
     constructor(salad, oldID, oldUUID) {
-      salad instanceof Salad ? this.ingredients = salad.ingredients : this.ingredients = {}; //todo spread ist för this =
-      // Object.defineProperty(this, 'id', {
-      //   value: oldID || `salad_` + Salad.instanceCounter++,
-      //   writable: false,
-      // });
-      this.id = oldID || `salad_` + Salad.instanceCounter++;
+      salad && salad instanceof Salad ? this.ingredients = {...salad.ingredients} : this.ingredients = {}; //todo spread ist för this =
+      this.id = oldID || `salad_` + Salad.#instanceCounter++;
       const uuid = oldUUID || uuidv4();
       this.uuid = uuid;
     }
@@ -37,13 +32,12 @@ class Salad {
       if (Array.isArray(inputs)) {
         salads = [];
         for (const salad in inputs) {
-          salads = salads.concat(this.parse(JSON.stringify(inputs[salad]))); //måste finnas ett bättre sätt att göra detta på
+          salads[salad] = new Salad(undefined, inputs[salad].id, inputs[salad].uuid);
+          salads[salad]['ingredients'] = {...inputs[salad]['ingredients']};
         }
       } else {
         salads = new Salad(undefined, inputs.id, inputs.uuid);
-        for(const name in inputs.ingredients) { //inputs direkt ist
-          salads.add(name, inputs.ingredients[name]);
-        }
+        salads['ingredients'] = {...inputs['ingredients']};
       }
       return salads;
     }
@@ -67,7 +61,6 @@ class GourmetSalad extends Salad {
   //getPrize = size * prize
   constructor(salad) {
     super(salad);
-    this.ingredients = {...super.ingredients};
     return this;
   }
   
@@ -109,9 +102,8 @@ class Order {
 Order.prototype.getPrice = function() {
   const salads = Object.values(this.saladList);
   return salads
-          .map((s) => s.getPrice())
-          .reduce((accum, curr) => accum + curr);
-  //todo
+    .map((s) => s.getPrice())
+    .reduce((accum, curr) => accum + curr);
 };
 
 Order.prototype.count = function() {

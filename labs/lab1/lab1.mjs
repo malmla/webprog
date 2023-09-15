@@ -166,5 +166,7 @@ myOrder.removeSalad(myCaesarSalad.uuid);
 
 console.log('remove orders myOrder\n' + JSON.stringify(myOrder) + '\nlength: ' + myOrder.count());
 
+
+
 console.log('Total kostnad: ' + myOrder.getPrice());
 // expected gourmet 60 + objectcopy 45 = 105
