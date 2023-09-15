@@ -6,7 +6,6 @@
  */
 
 import inventory from './inventory.mjs';
-import { v4 as uuidv4 } from 'uuid';
 import {Salad as Salad, GourmetSalad as GourmetSalad} from './salad.mjs';
 console.log('\n=== beginning of printout ================================');
 /* console.log('inventory:', inventory);
