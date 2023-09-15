@@ -6,7 +6,7 @@
  */
 
 import inventory from './inventory.mjs';
-import {Salad as Salad, GourmetSalad as GourmetSalad} from './salad.mjs';
+import {Salad as Salad, GourmetSalad as GourmetSalad, Order as Order} from './salad.mjs';
 console.log('\n=== beginning of printout ================================');
 /* console.log('inventory:', inventory);
 
@@ -99,7 +99,7 @@ the prototype chain?
   */
 
 console.log('\n--- Assignment 4 ---------------------------------------')
-{
+
 
 const singleText = JSON.stringify(myCaesarSalad);
 const arrayText = JSON.stringify([myCaesarSalad, myCaesarSalad]);
@@ -117,7 +117,7 @@ singleCopy.add('Gurka', inventory['Gurka']);
 console.log('originalet kostar ' + myCaesarSalad.getPrice() + ' kr');
 console.log('kopian med gurka kostar ' + singleCopy.getPrice() + ' kr');
 
-}
+
 
 console.log('\n--- Assignment 5 ---------------------------------------')
 
@@ -153,3 +153,18 @@ console.log('Min gourmetsallad har uuid: ' + myGourmetSalad.uuid);
  * Reflection question 6
  * ja det går att ha private fields
  */
+
+console.log('\n--- Order ----------------------------------------------')
+let myOrder = new Order();
+myOrder.addSalad(myCaesarSalad);
+myOrder.addSalad(myGourmetSalad);
+myOrder.addSalad(objectCopy);
+
+console.log('orders myOrder\n' + JSON.stringify(myOrder) + '\nlength: ' + myOrder.count());
+
+myOrder.removeSalad(myCaesarSalad.uuid);
+
+console.log('remove orders myOrder\n' + JSON.stringify(myOrder) + '\nlength: ' + myOrder.count());
+
+console.log('Total kostnad: ' + myOrder.getPrice());
+// expected gourmet 60 + objectcopy 45 = 105

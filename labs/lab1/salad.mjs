@@ -11,7 +11,7 @@ class Salad {
     uuid;
   
     constructor(salad, oldID, oldUUID) {
-      salad instanceof Salad ? this.ingredients = salad.ingredients : this.ingredients = {};
+      salad instanceof Salad ? this.ingredients = salad.ingredients : this.ingredients = {}; //todo spread ist för this =
       // Object.defineProperty(this, 'id', {
       //   value: oldID || `salad_` + Salad.instanceCounter++,
       //   writable: false,
@@ -40,8 +40,8 @@ class Salad {
           salads = salads.concat(this.parse(JSON.stringify(inputs[salad]))); //måste finnas ett bättre sätt att göra detta på
         }
       } else {
-        salads = new Salad(this.salad = undefined, this.oldID = inputs.id, this.oldUUID = inputs.uuid);
-        for(const name in inputs.ingredients) {
+        salads = new Salad(undefined, inputs.id, inputs.uuid);
+        for(const name in inputs.ingredients) { //inputs direkt ist
           salads.add(name, inputs.ingredients[name]);
         }
       }
@@ -86,4 +86,35 @@ GourmetSalad.prototype.getPrice = function() {
     .reduce((accum, price) => accum + price);
 };
 
-export {Salad, GourmetSalad};
+class Order {
+  uuidOrder;
+  saladList;
+  
+  constructor() {
+    this.saladList = {};
+    this.uuidOrder = uuidv4();
+  };
+
+  addSalad(salad) {
+    salad instanceof Salad ? this.saladList[salad.uuid] = salad : console.error("not a salad");
+    return this;
+  };
+
+  removeSalad(saladUUID) {
+    delete this.saladList[saladUUID];
+    return this;
+  };
+};
+
+Order.prototype.getPrice = function() {
+  const salads = Object.values(this.saladList);
+  return salads
+          .map((s) => s.getPrice())
+          .reduce((accum, curr) => accum + curr);
+  //todo
+};
+
+Order.prototype.count = function() {
+  return Object.values(this.saladList).length;
+};
+export {Salad, GourmetSalad, Order};
