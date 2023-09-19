@@ -1,23 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import inventory from './inventory.mjs';
+import ComposeSalad from './ComposeSalad'
 
 function App() {
+  const extras = Object.keys(inventory).filter(name => inventory[name].extra);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+    <div className="container py-4">
+      <header className="pb-3 mb-4 border-bottom">
+        <span className="fs-4">Min egen salladsbar</span>
       </header>
+
+      <div className="continer col-12">
+        <div className="row h-200 p-5 bg-light border rounded-3">
+          <h2>Välj innehållet i din sallad</h2>
+          {extras.map(name => <div key={name} className="col-4">{name}</div>)}
+        </div>
+      </div>
+
+      <footer className="pt-3 mt-4 text-muted border-top">
+        EDAF90 - webprogrammering
+      </footer>
     </div>
   );
 }
