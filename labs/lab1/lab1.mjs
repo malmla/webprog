@@ -41,7 +41,7 @@ function makeOptions(inv, prop) {
     .reduce((accum, curr) => accum + '\n' + curr);
 }
 
-console.log(makeOptions(inventory, 'protein'));
+console.log(makeOptions(inventory, 'dressing'));
 
 console.log('\n--- Assignment 2 ---------------------------------------');
 
