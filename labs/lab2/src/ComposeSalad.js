@@ -5,6 +5,7 @@ function ComposeSalad(props) {
   const [protein, setProtein] = useState('Kycklingfilé');
   const [dressing, setDressing] = useState('Pesto');
   const [extras, setExtra] = useState({ Bacon: true, Fetaost: true });
+  const extrasList = Object.entries(props.inventory).filter(entry => entry[1]['extra']);
 
   function onDressingChange (e) {
     setDressing(e.target.value);
@@ -34,7 +35,9 @@ function ComposeSalad(props) {
         />
 
         <h2>Välj innehållet i din sallad</h2>
-        <MakeExtras />
+        {
+          extrasList.map(e => <input type="checkbox" name={e[0]} checked={extras[e] || false}>{e[0]} ({e[1]['price']} kr)</input>)
+        }
 
         <h2>Välj dressing</h2>
         <MySaladSelect
@@ -74,8 +77,5 @@ function MySaladSelect(props) {
   )
 }
 
-function MakeExtras(props) {
-  return 
-}
 
 export default ComposeSalad;
