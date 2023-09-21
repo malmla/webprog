@@ -4,7 +4,7 @@ function ComposeSalad(props) {
   const [foundation, setFoundation] = useState('Pasta');
   const [protein, setProtein] = useState('Kycklingfilé');
   const [dressing, setDressing] = useState('Pesto');
-  const [extras, setExtra] = useState({ Bacon: true, Fetaost: true });
+  const [extras, setExtra] = useState(new Set().add('Bacon').add('Fetaost'));
   const extrasList = Object.entries(props.inventory).filter(entry => entry[1]['extra']);
 
   function onDressingChange (e) {
@@ -16,6 +16,26 @@ function ComposeSalad(props) {
   function onProteinChange (e) {
     setProtein(e.target.value);
   }
+
+  function MakeCheckboxes(props) {
+    return (
+      extrasList.map(e =>
+        <input
+          type="checkbox"
+          key={e[0]}
+          name={e[0]}
+          defaultChecked={props.extras.has(e[0])}
+          onChange={p =>
+            {
+              (p.target.checked ? props.extras.add(p.target.name) : props.extras.delete(p.target.name))
+              setExtra(props.extras);
+            }
+          }
+        />
+      )
+    )
+  }
+  
 
   return (
     <div className="continer col-12">
@@ -34,10 +54,8 @@ function ComposeSalad(props) {
           onChange={onProteinChange}
         />
 
-        <h2>Välj innehållet i din sallad</h2>
-        {
-          extrasList.map(e => <input type="checkbox" name={e[0]} checked={extras[e] || false}>{e[0]} ({e[1]['price']} kr)</input>)
-        }
+        <h2>Välj innehållet i din sallad</h2> {/** <p>{e[0]} ({e[1]['price']} kr)</p> */}
+        <MakeCheckboxes extras={extras}/>
 
         <h2>Välj dressing</h2>
         <MySaladSelect
@@ -62,6 +80,7 @@ function makeOptions(inv, prop) {
     .map(option => <option value={option[0]} key={option[0]}> {option[0]}, ({option[1]['price']} kr)</option>);
 } 
 */
+
 
 function MySaladSelect(props) {
   let options = props.options;
