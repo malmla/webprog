@@ -17,14 +17,6 @@ function ComposeSalad(props) {
     setProtein(e.target.value);
   }
 
-  function handleSubmit (e) {
-    e.preventDefault();
-
-    const saladForm = e.target;
-    const salad = new FormData(saladForm);
-    console.log(salad);
-  }
-
   function MakeCheckboxes(props) {
     const newExtras = new Set();
     props.extras.forEach(element => {
@@ -51,12 +43,19 @@ function ComposeSalad(props) {
     )
   }
   
+  function startValues() {
+    setDressing('Pesto');
+    setFoundation('Pasta');
+    setProtein('Kycklingfilé');
+    setExtra(new Set().add('Bacon').add('Fetaost'));
+  }
 
   return (
     <div className="continer col-12">
       <div className="row h-200 p-5 bg-light border rounded-3">
-        <form method="post" onSubmit={handleSubmit} key={"form"}>
-          <h2>Välj bas</h2>
+        <h2>Skapa din salad</h2>
+        <form method="post" onSubmit={(e) => {props.handleSubmit(e);startValues();}} key={"form"}>
+          <h3>Välj bas</h3>
           <MySaladSelect
             options={Object.entries(props.inventory).filter(entry => entry[1]['foundation'])}
             value={foundation}
@@ -64,7 +63,7 @@ function ComposeSalad(props) {
             name={'selectedFoundation'}
           />
 
-          <h2>Välj protein</h2>
+          <h3>Välj protein</h3>
           <MySaladSelect
             options={Object.entries(props.inventory).filter(entry => entry[1]['protein'])}
             value={protein}
@@ -72,10 +71,10 @@ function ComposeSalad(props) {
             name={'selectedProtein'}
           />
 
-          <h2>Välj innehållet i din sallad</h2> {/** <p>{e[0]} ({e[1]['price']} kr)</p> */}
+          <h3>Välj innehållet i din sallad</h3> {/** <p>{e[0]} ({e[1]['price']} kr)</p> */}
           <MakeCheckboxes extras={extras}/>
 
-          <h2>Välj dressing</h2>
+          <h3>Välj dressing</h3>
           <MySaladSelect
             options={Object.entries(props.inventory).filter(entry => entry[1]['dressing'])}
             value={dressing}
@@ -112,7 +111,7 @@ function MySaladSelect(props) {
     <select
       value={props.value}
       onChange={props.onChange}
-      name={props.name}
+      name={props.value}
     >
       {
         options.map(option => <option value={option[0]} key={option[0]}> {option[0]}, ({option[1]['price']} kr)</option>)
