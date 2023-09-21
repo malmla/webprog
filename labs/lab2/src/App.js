@@ -19,7 +19,7 @@ function App() {
       salad.add(item, inventory[item]);
     }
 
-    const newOrder = Object.assign(order);
+    const newOrder = new Order(order.uuidOrder, order.saladList);    
     newOrder.addSalad(salad);
     setOrder(newOrder);
   }

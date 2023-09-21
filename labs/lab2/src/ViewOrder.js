@@ -5,7 +5,6 @@ function ViewOrder (props) {
   <div className="container col-12">
     <div className="row h-200 p-5 bg-light border rounded-3">
       <h2>Varukorg</h2>
-      Order-id: {props.saladOrders.uuidOrder}
       <ul>
         {
           Object.entries(props.saladOrders.saladList).map(salad => 

@@ -80,9 +80,9 @@ class Order {
   uuidOrder;
   saladList;
   
-  constructor() {
-    this.saladList = {};
-    this.uuidOrder = uuidv4();
+  constructor(oldUUID, saladList) {
+    this.saladList = {...saladList};
+    this.uuidOrder = oldUUID || uuidv4();
   };
 
   addSalad(salad) {
