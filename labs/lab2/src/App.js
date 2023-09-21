@@ -22,7 +22,6 @@ function App() {
     const newOrder = Object.assign(order);
     newOrder.addSalad(salad);
     setOrder(newOrder);
-
   }
 
   return (

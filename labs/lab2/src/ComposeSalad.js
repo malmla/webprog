@@ -51,7 +51,7 @@ function ComposeSalad(props) {
   }
 
   return (
-    <div className="continer col-12">
+    <div className="container col-12">
       <div className="row h-200 p-5 bg-light border rounded-3">
         <h2>Skapa din salad</h2>
         <form method="post" onSubmit={(e) => {props.handleSubmit(e);startValues();}} key={"form"}>
