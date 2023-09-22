@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 function ComposeSalad(props) {
-  const [foundation, setFoundation] = useState('Pasta');
-  const [protein, setProtein] = useState('Kycklingfilé');
-  const [dressing, setDressing] = useState('Pesto');
-  const [extras, setExtra] = useState(new Set().add('Bacon').add('Fetaost'));
+  const [foundation, setFoundation] = useState('None');
+  const [protein, setProtein] = useState('None');
+  const [dressing, setDressing] = useState('None');
+  const [extras, setExtra] = useState(new Set());
   const extrasList = Object.entries(props.inventory).filter(entry => entry[1]['extra']);
 
   function onDressingChange (e) {
@@ -15,6 +15,13 @@ function ComposeSalad(props) {
   }
   function onProteinChange (e) {
     setProtein(e.target.value);
+  }
+
+  function makeCaesarSalad () {
+    setDressing('Ceasardressing');
+    setFoundation('Sallad');
+    setProtein('Kycklingfilé');
+    setExtra(new Set().add('Gurka').add('Parmesan').add('Krutonger').add('Bacon'));
   }
 
   function MakeCheckboxes(props) {
@@ -48,10 +55,10 @@ function ComposeSalad(props) {
   }
   
   function startValues() {
-    setDressing('Pesto');
-    setFoundation('Pasta');
-    setProtein('Kycklingfilé');
-    setExtra(new Set().add('Bacon').add('Fetaost'));
+    setDressing('None');
+    setFoundation('None');
+    setProtein('None');
+    setExtra(new Set());
   }
 
   return (
@@ -84,6 +91,7 @@ function ComposeSalad(props) {
             name={'selectedDressing'}
             titel={'Välj dressing'}
           />
+
           </span>
 
           <h3 className='m-3'>Välj innehållet i din sallad</h3>
@@ -91,9 +99,8 @@ function ComposeSalad(props) {
             <MakeCheckboxes extras={extras} />
           </span>
 
-
-
           <button type="submit" className='m-3 btn btn-primary'>Lägg i varukorg</button>
+          <button type="button" className='m-3 btn btn-primary' onClick={makeCaesarSalad}>Snabbval: Caesarsalad</button>
 
         </form>
       </div>
@@ -125,6 +132,7 @@ function MySaladSelect(props) {
         onChange={props.onChange}
         name={props.value}
       >
+        <option disabled={true} value={'None'}>None</option>
         {
           options.map(option => <option value={option[0]} key={option[0]}> {option[0]}, ({option[1]['price']} kr)</option>)
         }

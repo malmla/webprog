@@ -19,9 +19,13 @@ function App() {
       salad.add(item, inventory[item]);
     }
 
-    const newOrder = new Order(order.uuidOrder, order.saladList);    
-    newOrder.addSalad(salad);
-    setOrder(newOrder);
+    if (salad.count('foundation') && salad.count('protein') && salad.count('dressing')) {
+      const newOrder = new Order(order.uuidOrder, order.saladList);
+      newOrder.addSalad(salad);
+      setOrder(newOrder);
+    } else {
+      console.log('saladen behöver ha en bas, en protein, och en dressing')
+    }
   }
 
   return (
