@@ -24,7 +24,11 @@ function ComposeSalad(props) {
     });
     return (
       extrasList.map(e =>
-        <span className={'container m-1'} key={e[0] + ' box'}>
+        <span 
+          className={'container m-1'} 
+          key={e[0] + ' box'}
+        >
+
         <input
           type="checkbox"
           key={e[0]}
