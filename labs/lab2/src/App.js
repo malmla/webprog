@@ -28,13 +28,19 @@ function App() {
     }
   }
 
+  function handleRemoveOrder(e) {
+    const newOrder = new Order(order.uuidOrder, order.saladList);
+    newOrder.removeSalad(e.target.value);
+    setOrder(newOrder);
+  }
+
   return (
     <div className="container py-4">
       <header className="pb-3 mb-4 border-bottom">
         <span className="fs-4">Min egen salladsbar</span>
       </header>
 
-      <ViewOrder saladOrders={order} />
+      <ViewOrder saladOrders={order} handleRemoveOrder={handleRemoveOrder} />
       <ComposeSalad inventory={inventory} handleSubmit={handleSubmit}/>
 
       <footer className="pt-3 mt-4 text-muted border-top">
