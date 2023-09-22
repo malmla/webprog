@@ -24,7 +24,7 @@ function ComposeSalad(props) {
     });
     return (
       extrasList.map(e =>
-        <div className={'container m-1'} key={e[0] + ' box'}>
+        <span className={'container m-1'} key={e[0] + ' box'}>
         <input
           type="checkbox"
           key={e[0]}
@@ -38,7 +38,7 @@ function ComposeSalad(props) {
           }
         />
         {` ${e[0]}, (${e[1]['price']} kr)`}
-        </div>
+        </span>
       )
     )
   }
@@ -55,6 +55,8 @@ function ComposeSalad(props) {
       <div className="row h-200 p-5 bg-light border rounded-3">
         <h2>Skapa din salad</h2>
         <form method="post" onSubmit={(e) => {props.handleSubmit(e);startValues();}} key={"form"}>
+
+          <span className='container row row-cols-auto'>
           <MySaladSelect
             options={Object.entries(props.inventory).filter(entry => entry[1]['foundation'])}
             value={foundation}
@@ -71,11 +73,6 @@ function ComposeSalad(props) {
             titel={'Välj protein'}
           />
 
-          <h3 className='m-3'>Välj innehållet i din sallad</h3>
-          <span className='row container row-cols-4'>
-            <MakeCheckboxes extras={extras} />
-          </span>
-
           <MySaladSelect
             options={Object.entries(props.inventory).filter(entry => entry[1]['dressing'])}
             value={dressing}
@@ -83,6 +80,14 @@ function ComposeSalad(props) {
             name={'selectedDressing'}
             titel={'Välj dressing'}
           />
+          </span>
+
+          <h3 className='m-3'>Välj innehållet i din sallad</h3>
+          <span className='row row-cols-4'>
+            <MakeCheckboxes extras={extras} />
+          </span>
+
+
 
           <button type="submit" className='m-3 btn btn-primary'>Lägg i varukorg</button>
 
@@ -109,7 +114,7 @@ function makeOptions(inv, prop) {
 function MySaladSelect(props) {
   let options = props.options;
   return (
-    <div className='m-3'>
+    <div className='col m-3'>
       <h3>{props.titel}</h3>
       <select
         value={props.value}
