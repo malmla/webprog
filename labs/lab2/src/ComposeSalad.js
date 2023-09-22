@@ -24,7 +24,7 @@ function ComposeSalad(props) {
     });
     return (
       extrasList.map(e =>
-        <div className={'extra-box'} key={e[0] + ' box'}>
+        <div className={'container m-1'} key={e[0] + ' box'}>
         <input
           type="checkbox"
           key={e[0]}
@@ -55,34 +55,36 @@ function ComposeSalad(props) {
       <div className="row h-200 p-5 bg-light border rounded-3">
         <h2>Skapa din salad</h2>
         <form method="post" onSubmit={(e) => {props.handleSubmit(e);startValues();}} key={"form"}>
-          <h3>Välj bas</h3>
           <MySaladSelect
             options={Object.entries(props.inventory).filter(entry => entry[1]['foundation'])}
             value={foundation}
             onChange={onFoundationChange}
             name={'selectedFoundation'}
+            titel={'Välj bas'}
           />
 
-          <h3>Välj protein</h3>
           <MySaladSelect
             options={Object.entries(props.inventory).filter(entry => entry[1]['protein'])}
             value={protein}
             onChange={onProteinChange}
             name={'selectedProtein'}
+            titel={'Välj protein'}
           />
 
-          <h3>Välj innehållet i din sallad</h3> {/** <p>{e[0]} ({e[1]['price']} kr)</p> */}
-          <MakeCheckboxes extras={extras}/>
+          <h3 className='m-3'>Välj innehållet i din sallad</h3>
+          <span className='row container row-cols-4'>
+            <MakeCheckboxes extras={extras} />
+          </span>
 
-          <h3>Välj dressing</h3>
           <MySaladSelect
             options={Object.entries(props.inventory).filter(entry => entry[1]['dressing'])}
             value={dressing}
             onChange={onDressingChange}
             name={'selectedDressing'}
+            titel={'Välj dressing'}
           />
 
-          <button type="submit">Lägg i varukorg</button>
+          <button type="submit" className='m-3 btn btn-primary'>Lägg i varukorg</button>
 
         </form>
       </div>
@@ -107,16 +109,17 @@ function makeOptions(inv, prop) {
 function MySaladSelect(props) {
   let options = props.options;
   return (
-    <div>
-    <select
-      value={props.value}
-      onChange={props.onChange}
-      name={props.value}
-    >
-      {
-        options.map(option => <option value={option[0]} key={option[0]}> {option[0]}, ({option[1]['price']} kr)</option>)
-      }
-    </select>
+    <div className='m-3'>
+      <h3>{props.titel}</h3>
+      <select
+        value={props.value}
+        onChange={props.onChange}
+        name={props.value}
+      >
+        {
+          options.map(option => <option value={option[0]} key={option[0]}> {option[0]}, ({option[1]['price']} kr)</option>)
+        }
+      </select>
     </div>
   )
 }
