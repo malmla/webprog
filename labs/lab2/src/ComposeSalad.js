@@ -38,7 +38,6 @@ function ComposeSalad(props) {
 
         <input
           type="checkbox"
-          key={e[0]}
           name={e[0]}
           defaultChecked={newExtras.has(e[0])}
           onChange={p =>
@@ -54,18 +53,25 @@ function ComposeSalad(props) {
     )
   }
   
-  function startValues() {
+  function setToStartValues() {
     setDressing('None');
     setFoundation('None');
     setProtein('None');
     setExtra(new Set());
   }
 
+  function handleSubmit(e, addSaladOrder) {
+    e.preventDefault();
+    const formSalad = new FormData(e.target);
+    addSaladOrder(formSalad);
+    setToStartValues();
+  }
+
   return (
     <div className="container col-12">
       <div className="row h-200 p-5 bg-light border rounded-3">
         <h2>Skapa din salad</h2>
-        <form method="post" onSubmit={(e) => {props.handleSubmit(e);startValues();}} key={"form"}>
+        <form onSubmit={(e) => {handleSubmit(e, props.addSaladOrder);}} key={"form"}>
 
           <span className='container row row-cols-auto'>
           <MySaladSelect
@@ -131,6 +137,7 @@ function MySaladSelect(props) {
         value={props.value}
         onChange={props.onChange}
         name={props.value}
+        className='form-select'
       >
         <option disabled={true} value={'None'}>None</option>
         {

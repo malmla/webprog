@@ -10,12 +10,10 @@ import ViewOrder from './ViewOrder';
 function App() {
   const [order, setOrder] = useState(new Order());
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const formSalad = new FormData(e.target);
+  function addSaladOrder(saladForm) {
     const salad = new Salad();
 
-    for (const item of formSalad.keys()) {
+    for (const item of saladForm.keys()) {
       salad.add(item, inventory[item]);
     }
 
@@ -28,7 +26,7 @@ function App() {
     }
   }
 
-  function handleRemoveOrder(e) {
+  function removeSaladOrder(e) {
     const newOrder = new Order(order.uuidOrder, order.saladList);
     newOrder.removeSalad(e.target.value);
     setOrder(newOrder);
@@ -40,8 +38,8 @@ function App() {
         <span className="fs-4">Min egen salladsbar</span>
       </header>
 
-      <ViewOrder saladOrders={order} handleRemoveOrder={handleRemoveOrder} />
-      <ComposeSalad inventory={inventory} handleSubmit={handleSubmit}/>
+      <ViewOrder saladOrders={order} removeSaladOrder={removeSaladOrder} />
+      <ComposeSalad inventory={inventory} addSaladOrder={addSaladOrder}/>
 
       <footer className="pt-3 mt-4 text-muted border-top">
         EDAF90 - webprogrammering

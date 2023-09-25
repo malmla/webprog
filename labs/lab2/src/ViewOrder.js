@@ -1,6 +1,10 @@
 
 function ViewOrder (props) {
-  //const orders = Object.assign(props.saladOrders);
+  
+function handleRemoveOrder(e) {
+  props.removeSaladOrder(e);
+}
+
   return (
   <div className="container col-12">
     <div className="row h-200 p-5 bg-light border rounded-3">
@@ -10,14 +14,14 @@ function ViewOrder (props) {
         {
           Object.entries(props.saladOrders.saladList).map(salad => 
             <div key={'div-item-' + salad[0]} className="row border border-1">
-              <li key={'list-item-' + salad[0]} className="col list-group-item m">
+              <li className="col list-group-item m">
                 {`${Object.keys(salad[1]['ingredients']).map(ing => ` ${ing}`)}: ${salad[1].getPrice()} kr`}
               </li>
 
-              <button key={'remove-item-' + salad[0]} 
+              <button 
                 value={salad[0]} type="button" 
                 className='m col-2 btn btn-sm btn-secondary ' 
-                onClick={(e) => props.handleRemoveOrder(e)}
+                onClick={(e) => handleRemoveOrder(e)}
               >
                 Remove
               </button>
