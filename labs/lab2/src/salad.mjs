@@ -49,7 +49,7 @@ Salad.prototype.getPrice = function() {
   
 Salad.prototype.count = function(prop) {
     let count = Object.values(this.ingredients);
-    return Object.values(count.filter((p) => p[prop])).length;
+    return Object.values(count.filter(p => p[prop])).length;
 };
 
 class GourmetSalad extends Salad {
