@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 function ComposeSalad(props) {
-  const [foundation, setFoundation] = useState('None');
-  const [protein, setProtein] = useState('None');
-  const [dressing, setDressing] = useState('None');
+  const [foundation, setFoundation] = useState("");
+  const [protein, setProtein] = useState("");
+  const [dressing, setDressing] = useState("");
   const [extras, setExtra] = useState(new Set());
   const extrasList = Object.entries(props.inventory).filter(entry => entry[1]['extra']);
 
@@ -54,24 +54,34 @@ function ComposeSalad(props) {
   }
   
   function setToStartValues() {
-    setDressing('None');
-    setFoundation('None');
-    setProtein('None');
+    setDressing("");
+    setFoundation("");
+    setProtein("");
     setExtra(new Set());
   }
 
   function handleSubmit(e, addSaladOrder) {
     e.preventDefault();
-    const formSalad = new FormData(e.target);
-    addSaladOrder(formSalad);
-    setToStartValues();
+    e.target.classList.add("was-validated");
+
+    // only make a salad if valid form
+    if (e.target.checkValidity()) {
+      const formSalad = new FormData(e.target);
+      addSaladOrder(formSalad);
+      setToStartValues();
+      e.target.classList.remove("was-validated");
+    }
+
   }
 
   return (
     <div className="container col-12">
       <div className="row h-200 p-5 bg-light border rounded-3">
         <h2>Skapa din salad</h2>
-        <form onSubmit={(e) => {handleSubmit(e, props.addSaladOrder);}} key={"form"}>
+        <form 
+          onSubmit={(e) => {handleSubmit(e, props.addSaladOrder);}}
+          noValidate        
+        >
 
           <span className='container row row-cols-auto'>
           <MySaladSelect
@@ -79,7 +89,7 @@ function ComposeSalad(props) {
             value={foundation}
             onChange={onFoundationChange}
             name={'selectedFoundation'}
-            titel={'Välj bas'}
+            titel={'bas'}
           />
 
           <MySaladSelect
@@ -87,7 +97,7 @@ function ComposeSalad(props) {
             value={protein}
             onChange={onProteinChange}
             name={'selectedProtein'}
-            titel={'Välj protein'}
+            titel={'protein'}
           />
 
           <MySaladSelect
@@ -95,7 +105,7 @@ function ComposeSalad(props) {
             value={dressing}
             onChange={onDressingChange}
             name={'selectedDressing'}
-            titel={'Välj dressing'}
+            titel={'dressing'}
           />
 
           </span>
@@ -132,18 +142,23 @@ function MySaladSelect(props) {
   let options = props.options;
   return (
     <div className='col m-3'>
-      <h3>{props.titel}</h3>
+      <h3>Välj {props.titel}</h3>
       <select
         value={props.value}
         onChange={props.onChange}
         name={props.value}
         className='form-select'
+        required
       >
-        <option disabled={true} value={'None'}>None</option>
+        <option value={""}></option>
         {
           options.map(option => <option value={option[0]} key={option[0]}> {option[0]}, ({option[1]['price']} kr)</option>)
         }
       </select>
+
+      <div className='invalid-feedback'>
+        Din salad måste innehålla en {props.titel}.
+      </div>
     </div>
   )
 }
