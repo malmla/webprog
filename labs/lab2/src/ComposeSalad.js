@@ -1,11 +1,19 @@
 import { useState } from 'react';
+import { useOutletContext, useNavigate } from 'react-router-dom';
+import { Salad, Order } from './salad.mjs';
+//import inventory from './inventory.mjs';
 
 function ComposeSalad(props) {
   const [foundation, setFoundation] = useState("");
   const [protein, setProtein] = useState("");
   const [dressing, setDressing] = useState("");
   const [extras, setExtra] = useState(new Set());
-  const extrasList = Object.entries(props.inventory).filter(entry => entry[1]['extra']);
+  const order = useOutletContext()['order'];
+  const setOrder = useOutletContext()['setOrder'];
+  const inventory = useOutletContext()['inventory'];
+  const navigate = useNavigate();
+
+  const extrasList = Object.entries(inventory).filter(entry => entry[1]['extra']);
 
   function onDressingChange (e) {
     setDressing(e.target.value);
@@ -60,7 +68,24 @@ function ComposeSalad(props) {
     setExtra(new Set());
   }
 
-  function handleSubmit(e, addSaladOrder) {
+  function addSaladOrder(saladForm) {
+    const salad = new Salad();
+
+    for (const item of saladForm.keys()) {
+      salad.add(item, inventory[item]);
+    }
+
+    if (salad.count('foundation') && salad.count('protein') && salad.count('dressing')) {
+      const newOrder = new Order(order.uuidOrder, order.saladList);
+      newOrder.addSalad(salad);
+      setOrder(newOrder);
+      navigate('/view-order');
+    } else {
+      console.log('saladen behöver ha en bas, en protein, och en dressing')
+    }
+  }
+
+  function handleSubmit(e) {
     e.preventDefault();
     e.target.classList.add("was-validated");
 
@@ -79,13 +104,13 @@ function ComposeSalad(props) {
       <div className="row h-200 p-5 bg-light border rounded-3">
         <h2>Skapa din salad</h2>
         <form 
-          onSubmit={(e) => {handleSubmit(e, props.addSaladOrder);}}
+          onSubmit={(e) => {handleSubmit(e)}}
           noValidate        
         >
 
           <span className='container row row-cols-auto'>
           <MySaladSelect
-            options={Object.entries(props.inventory).filter(entry => entry[1]['foundation'])}
+            options={Object.entries(inventory).filter(entry => entry[1]['foundation'])}
             value={foundation}
             onChange={onFoundationChange}
             name={'selectedFoundation'}
@@ -93,7 +118,7 @@ function ComposeSalad(props) {
           />
 
           <MySaladSelect
-            options={Object.entries(props.inventory).filter(entry => entry[1]['protein'])}
+            options={Object.entries(inventory).filter(entry => entry[1]['protein'])}
             value={protein}
             onChange={onProteinChange}
             name={'selectedProtein'}
@@ -101,7 +126,7 @@ function ComposeSalad(props) {
           />
 
           <MySaladSelect
-            options={Object.entries(props.inventory).filter(entry => entry[1]['dressing'])}
+            options={Object.entries(inventory).filter(entry => entry[1]['dressing'])}
             value={dressing}
             onChange={onDressingChange}
             name={'selectedDressing'}

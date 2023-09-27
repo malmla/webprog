@@ -12,11 +12,21 @@ const router = createBrowserRouter([
     children: [
       {
         path: "compose-salad",
-        element: <ComposeSalad inventory={inventory} addSaladOrder={addSaladOrder} />
+        element: <ComposeSalad />
       },
       {
         path: "view-order",
-        element: <ViewOrder saladOrders={order} removeSaladOrder={removeSaladOrder} />
+        element: <ViewOrder />,
+        children: [
+          {
+            path: "confirm/:uuid",
+            element: <p>vad ska in här egentligen?</p>
+          }
+        ]
+      },
+      {
+        path: "*",
+        element: <h2>Sidan du letar efter kan ej hittas.</h2>
       }
     ]
   },

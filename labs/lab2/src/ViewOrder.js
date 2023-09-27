@@ -1,18 +1,21 @@
+import { useOutletContext } from "react-router-dom";
 
 function ViewOrder (props) {
-  
-function handleRemoveOrder(e) {
-  props.removeSaladOrder(e);
-}
+  const removeSaladOrder = useOutletContext()['removeSaladOrder'];
+  const order = useOutletContext()['order'];
+
+  function handleRemoveOrder(e) {
+    removeSaladOrder(e);
+  }
 
   return (
   <div className="container col-12">
     <div className="row h-200 p-5 bg-light border rounded-3">
       <h2>Varukorg</h2>
-      Order-id: {props.saladOrders.uuidOrder}
+      Order-id: {order.uuidOrder}
       <ul className="list-group row-cols-auto">
         {
-          Object.entries(props.saladOrders.saladList).map(salad => 
+          Object.entries(order.saladList).map(salad => 
             <div key={'div-item-' + salad[0]} className="row border border-1">
               <li className="col list-group-item m">
                 {`${Object.keys(salad[1]['ingredients']).map(ing => ` ${ing}`)}: ${salad[1].getPrice()} kr`}

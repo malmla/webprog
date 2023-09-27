@@ -1,11 +1,12 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import inventory from './inventory.mjs';
-import ComposeSalad from './ComposeSalad'
 import { Order, Salad } from './salad.mjs'
 import { useState } from 'react';
-import ViewOrder from './ViewOrder';
 import { NavLink, Outlet } from 'react-router-dom';
+//import ComposeSalad from './ComposeSalad'
+//import ViewOrder from './ViewOrder';
 
 
 function App() {
@@ -52,7 +53,13 @@ function App() {
   function Navbar() {
     return (
       <nav>
-        <ul className="nav nav-tabs">
+        <ul className="nav nav-pills">
+          <li className="nav-item">
+            <NavLink className="nav-link" to={'/'}>
+              Start
+            </NavLink>
+          </li>
+
           <li className="nav-item">
             <NavLink className="nav-link" to={'/compose-salad'}>
               Skapa salad
@@ -73,10 +80,12 @@ function App() {
       <Header />
       <Navbar />
 
-      <Outlet context={{order, inventory, removeSaladOrder, addSaladOrder}}/>
+      <h1 className='m-3'>Välkommen!</h1>
 
-      <ViewOrder saladOrders={order} removeSaladOrder={removeSaladOrder} />
-      <ComposeSalad inventory={inventory} addSaladOrder={addSaladOrder} />
+      <Outlet context={{order, setOrder, inventory, removeSaladOrder, addSaladOrder}}/>
+
+      {/**<ViewOrder saladOrders={order} removeSaladOrder={removeSaladOrder} />
+      <ComposeSalad inventory={inventory} addSaladOrder={addSaladOrder} /> **/}
 
       <Footer />
     </div>
