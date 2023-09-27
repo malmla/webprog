@@ -5,7 +5,7 @@ import ComposeSalad from './ComposeSalad'
 import { Order, Salad } from './salad.mjs'
 import { useState } from 'react';
 import ViewOrder from './ViewOrder';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 
 
 function App() {
@@ -72,6 +72,8 @@ function App() {
     <div className="container py-4">
       <Header />
       <Navbar />
+
+      <Outlet context={{order, inventory, removeSaladOrder, addSaladOrder}}/>
 
       <ViewOrder saladOrders={order} removeSaladOrder={removeSaladOrder} />
       <ComposeSalad inventory={inventory} addSaladOrder={addSaladOrder} />

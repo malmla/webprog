@@ -12,11 +12,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "compose-salad",
-        element: <ComposeSalad />
+        element: <ComposeSalad inventory={inventory} addSaladOrder={addSaladOrder} />
       },
       {
         path: "view-order",
-        element: <ViewOrder />
+        element: <ViewOrder saladOrders={order} removeSaladOrder={removeSaladOrder} />
       }
     ]
   },
