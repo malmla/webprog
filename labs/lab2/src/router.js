@@ -1,19 +1,31 @@
-import { createBrowserRouter, useRouteError } from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from './App';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import ComposeSalad from "./ComposeSalad";
+import ViewOrder from "./ViewOrder";
 
 const router = createBrowserRouter([
   {
+    path: "/",
     element: <App />,
     children: [
       {
         path: "compose-salad",
-        element: <p>replace with compose salad component</p>
+        element: <ComposeSalad />
       },
       {
         path: "view-order",
-        element: <p>replace with vieworder</p>
+        element: <ViewOrder />
       }
     ]
   },
 ]);
+
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);
+
 export default router
