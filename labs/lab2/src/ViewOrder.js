@@ -1,16 +1,21 @@
-import { useOutletContext } from "react-router-dom";
+import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
 
 function ViewOrder (props) {
   const removeSaladOrder = useOutletContext()['removeSaladOrder'];
   const order = useOutletContext()['order'];
+  const navigate = useNavigate();
 
   function handleRemoveOrder(e) {
     removeSaladOrder(e);
+    navigate('../view-order')
   }
 
   return (
   <div className="container col-12">
     <div className="row h-200 p-5 bg-light border rounded-3">
+
+      <Outlet context={{order}}/>
+
       <h2>Varukorg</h2>
       Order-id: {order.uuidOrder}
       <ul className="list-group row-cols-auto">

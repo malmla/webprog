@@ -53,7 +53,7 @@ function App() {
   function Navbar() {
     return (
       <nav>
-        <ul className="nav nav-pills">
+        <ul className="nav nav-tabs">
           <li className="nav-item">
             <NavLink className="nav-link" to={'/'}>
               Start

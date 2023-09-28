@@ -4,12 +4,16 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ComposeSalad from "./ComposeSalad";
 import ViewOrder from "./ViewOrder";
+import Confirm from "./Confirm";
 
 const router = createBrowserRouter([
   {
-    path: "/",
     element: <App />,
     children: [
+      {
+        index: true,
+        element: <h2>Hej</h2>
+      },
       {
         path: "compose-salad",
         element: <ComposeSalad />
@@ -20,7 +24,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: "confirm/:uuid",
-            element: <p>vad ska in här egentligen?</p>
+            element: <Confirm />
           }
         ]
       },

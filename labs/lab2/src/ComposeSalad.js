@@ -79,7 +79,7 @@ function ComposeSalad(props) {
       const newOrder = new Order(order.uuidOrder, order.saladList);
       newOrder.addSalad(salad);
       setOrder(newOrder);
-      navigate('/view-order');
+      navigate('/view-order/confirm/' + salad.uuid);
     } else {
       console.log('saladen behöver ha en bas, en protein, och en dressing')
     }

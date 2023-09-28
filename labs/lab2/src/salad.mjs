@@ -79,6 +79,7 @@ GourmetSalad.prototype.getPrice = function() {
 class Order {
   uuidOrder;
   saladList;
+  lastSaladUUID;
   
   constructor(oldUUID, saladList) {
     this.saladList = {...saladList};
@@ -87,6 +88,7 @@ class Order {
 
   addSalad(salad) {
     salad instanceof Salad ? this.saladList[salad.uuid] = salad : console.error("not a salad");
+    this.lastSaladUUID = salad.uuid;
     return this;
   };
 
