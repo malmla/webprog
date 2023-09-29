@@ -508,3 +508,4 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/latex,visualstudiocode,node
 package-lock.json
 package.json
+labs/lab2/lab4_server/__MACOSX/lab4_server/._package.json
