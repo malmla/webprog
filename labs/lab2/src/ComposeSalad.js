@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useOutletContext, useNavigate } from 'react-router-dom';
+import { useOutletContext, useNavigate, Outlet, NavLink } from 'react-router-dom';
 import { Salad, Order } from './salad.mjs';
 //import inventory from './inventory.mjs';
 
@@ -39,6 +39,7 @@ function ComposeSalad(props) {
     });
     return (
       extrasList.map(e =>
+        <NavLink className="nav-link justify-content" to={'/compose-salad/view-ingredient/' + e[0]}>
         <span 
           className={'container m-1'} 
           key={e[0] + ' box'}
@@ -57,6 +58,7 @@ function ComposeSalad(props) {
         />
         {` ${e[0]}, (${e[1]['price']} kr)`}
         </span>
+        </NavLink>
       )
     )
   }
@@ -99,16 +101,47 @@ function ComposeSalad(props) {
 
   }
 
+  function MySaladSelect(props) {
+    let options = props.options;
+    return (
+      <div className='m-3'>
+        <h3>Välj {props.titel}</h3>
+        <select
+          value={props.value}
+          onChange={props.onChange}
+          name={props.value}
+          className='form-select m-3'
+          required
+        >
+          <option value={""}></option>
+          {
+            options.map(option => <option value={option[0]} key={option[0]}> {option[0]}, ({option[1]['price']} kr)</option>)
+          }
+        </select>
+  
+        <span>
+          <NavLink to={'view-ingredient/' + props.value}>
+            <button type="button" className='m-3 btn btn-secondary'>View details</button>
+          </NavLink>
+        </span>
+  
+        <div className='invalid-feedback'>
+          Din salad måste innehålla en {props.titel}.
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="container col-12">
       <div className="row h-200 p-5 bg-light border rounded-3">
-        <h2>Skapa din salad</h2>
+        <h2 className='m-3'>Skapa din salad</h2>
         <form 
           onSubmit={(e) => {handleSubmit(e)}}
           noValidate        
         >
 
-          <span className='container row row-cols-auto'>
+          <span className='container row row-cols-auto justify-content-center'>
           <MySaladSelect
             options={Object.entries(inventory).filter(entry => entry[1]['foundation'])}
             value={foundation}
@@ -135,13 +168,21 @@ function ComposeSalad(props) {
 
           </span>
 
-          <h3 className='m-3'>Välj innehållet i din sallad</h3>
-          <span className='row row-cols-4'>
-            <MakeCheckboxes extras={extras} />
-          </span>
+          <div>
 
-          <button type="submit" className='m-3 btn btn-primary'>Lägg i varukorg</button>
-          <button type="button" className='m-3 btn btn-primary' onClick={makeCaesarSalad}>Snabbval: Caesarsalad</button>
+            <h3 className='m-3'>Välj tillägg till din sallad</h3>
+            <span className='row row-cols-4 justify-content-start'>
+              <MakeCheckboxes extras={extras} />
+            </span>
+
+            <Outlet />
+
+          </div>
+
+          <div className='col justify-content-end'>
+            <button type="submit" className='m-3 btn btn-primary'>Lägg i varukorg</button>
+            <button type="button" className='m-3 btn btn-primary' onClick={makeCaesarSalad}>Snabbval: Caesarsalad</button>
+          </div>
 
         </form>
       </div>
@@ -163,30 +204,7 @@ function makeOptions(inv, prop) {
 */
 
 
-function MySaladSelect(props) {
-  let options = props.options;
-  return (
-    <div className='col m-3'>
-      <h3>Välj {props.titel}</h3>
-      <select
-        value={props.value}
-        onChange={props.onChange}
-        name={props.value}
-        className='form-select'
-        required
-      >
-        <option value={""}></option>
-        {
-          options.map(option => <option value={option[0]} key={option[0]}> {option[0]}, ({option[1]['price']} kr)</option>)
-        }
-      </select>
 
-      <div className='invalid-feedback'>
-        Din salad måste innehålla en {props.titel}.
-      </div>
-    </div>
-  )
-}
 
 
 export default ComposeSalad;

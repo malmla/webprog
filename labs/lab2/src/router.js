@@ -5,6 +5,7 @@ import ReactDOM from 'react-dom/client';
 import ComposeSalad from "./ComposeSalad";
 import ViewOrder from "./ViewOrder";
 import Confirm from "./Confirm";
+import ViewIngredient from "./ViewIngredient";
 
 const router = createBrowserRouter([
   {
@@ -16,7 +17,13 @@ const router = createBrowserRouter([
       },
       {
         path: "compose-salad",
-        element: <ComposeSalad />
+        element: <ComposeSalad />,
+        children: [
+          {
+            path: "view-ingredient/:name",
+            element: <ViewIngredient />
+          }
+        ]
       },
       {
         path: "view-order",
