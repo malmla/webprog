@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <h2>Hej</h2>
+        element: <h2>Välkommen!</h2>
       },
       {
         path: "compose-salad",

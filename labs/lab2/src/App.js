@@ -80,8 +80,6 @@ function App() {
       <Header />
       <Navbar />
 
-      <h1 className='m-3'>Välkommen!</h1>
-
       <Outlet context={{order, setOrder, inventory, removeSaladOrder, addSaladOrder}}/>
 
       {/**<ViewOrder saladOrders={order} removeSaladOrder={removeSaladOrder} />
