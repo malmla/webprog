@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useOutletContext, useNavigate, Outlet, NavLink } from 'react-router-dom';
+import { useOutletContext, useNavigate, useLoaderData, Outlet, NavLink } from 'react-router-dom';
 import { Salad, Order } from './salad.mjs';
 //import inventory from './inventory.mjs';
 
@@ -10,7 +10,7 @@ function ComposeSalad(props) {
   const [extras, setExtra] = useState(new Set());
   const order = useOutletContext()['order'];
   const setOrder = useOutletContext()['setOrder'];
-  const inventory = useOutletContext()['inventory'];
+  const inventory = useLoaderData();
   const navigate = useNavigate();
 
   const extrasList = Object.entries(inventory).filter(entry => entry[1]['extra']);

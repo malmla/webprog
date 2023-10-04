@@ -1,8 +1,8 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import inventory from './inventory.mjs';
-import { Order, Salad } from './salad.mjs'
+//import inventory from './inventory.mjs';
+import { Order } from './salad.mjs'
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 //import ComposeSalad from './ComposeSalad'
@@ -12,7 +12,7 @@ import { NavLink, Outlet } from 'react-router-dom';
 function App() {
   const [order, setOrder] = useState(new Order());
 
-  function addSaladOrder(saladForm) {
+  /* function addSaladOrder(saladForm) {
     const salad = new Salad();
 
     for (const item of saladForm.keys()) {
@@ -26,7 +26,7 @@ function App() {
     } else {
       console.log('saladen behöver ha en bas, en protein, och en dressing')
     }
-  }
+  } */
 
   function removeSaladOrder(e) {
     const newOrder = new Order(order.uuidOrder, order.saladList);
@@ -80,7 +80,7 @@ function App() {
       <Header />
       <Navbar />
 
-      <Outlet context={{order, setOrder, inventory, removeSaladOrder, addSaladOrder}}/>
+      <Outlet context={{order, setOrder, removeSaladOrder}}/>
 
       {/**<ViewOrder saladOrders={order} removeSaladOrder={removeSaladOrder} />
       <ComposeSalad inventory={inventory} addSaladOrder={addSaladOrder} /> **/}
