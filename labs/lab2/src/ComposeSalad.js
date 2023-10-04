@@ -39,7 +39,8 @@ function ComposeSalad(props) {
     });
     return (
       extrasList.map(e =>
-        <NavLink className="nav-link justify-content" to={'/compose-salad/view-ingredient/' + e[0]}>
+        <NavLink key={e[0] + 'nav box'}
+        className="nav-link justify-content" to={'/compose-salad/view-ingredient/' + e[0]}>
         <span 
           className={'container m-1'} 
           key={e[0] + ' box'}
