@@ -11,7 +11,7 @@ const baseServerURL = "http://localhost:8080";
 
 async function inventoryLoader() {
   const inventory = { Sallad: { price: 10, foundation: true, vegan: true } };
-  await new Promise(resolve => setTimeout(resolve, 500));
+  //await new Promise(resolve => setTimeout(resolve, 500));
 
   /*let promiseFoundations = safeFetchJson(new URL('foundations', baseServerURL))
     .then(result => {
@@ -25,27 +25,30 @@ async function inventoryLoader() {
       });
       return result;
     }); */
-  let myPromise = [];
-  myPromise.push(fetchIngredientType('foundations', inventory));
-  myPromise.push(fetchIngredientType('extras', inventory));
-  myPromise.push(fetchIngredientType('proteins', inventory));
-  myPromise.push(fetchIngredientType('dressings', inventory));
+  let myPromises = [];
+  myPromises.push(fetchIngredientType('foundations', inventory));
+  myPromises.push(fetchIngredientType('extras', inventory));
+  myPromises.push(fetchIngredientType('proteins', inventory));
+  myPromises.push(fetchIngredientType('dressings', inventory));
   
-  return Promise.all(myPromise).then(_ => {
+
+
+  return await Promise.all(myPromises).then( _ => {
     return inventory;
   });
 }
 
-async function fetchIngredientType (ingredientType, inventory) {
+function fetchIngredientType (ingredientType, inventory) {
   let promises = [];
   safeFetchJson(new URL(ingredientType, baseServerURL))
   .then(result => {
     result.forEach(element => {
       let promise = fetchIngredient(ingredientType, element);
-      promises.push({[element]: promise});
-      promise.then(result => {
-        inventory[element] = {...result};
+      promise.then(details => {
+        inventory[element] = {...details};
       });
+
+      promises.push({[element]: promise});
     });
   })
 
@@ -53,11 +56,7 @@ async function fetchIngredientType (ingredientType, inventory) {
 }
 
 async function fetchIngredient(type, ingredient) {
-  let resp = safeFetchJson(new URL(type + '/' + ingredient, baseServerURL));
-  resp.then(properties => {
-    console.log({[ingredient]: {...properties}});
-  });
-  return resp;
+  return await safeFetchJson(new URL(type + '/' + ingredient, baseServerURL));
 }
 
 function safeFetchJson(url) {
