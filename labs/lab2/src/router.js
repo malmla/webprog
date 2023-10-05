@@ -6,32 +6,19 @@ import ComposeSalad from "./ComposeSalad";
 import ViewOrder from "./ViewOrder";
 import Confirm from "./Confirm";
 import ViewIngredient from "./ViewIngredient";
+import Spinner from "./Spinner";
 
 const baseServerURL = "http://localhost:8080";
 
 async function inventoryLoader() {
   const inventory = { Sallad: { price: 10, foundation: true, vegan: true } };
-  //await new Promise(resolve => setTimeout(resolve, 500));
+  await new Promise(resolve => setTimeout(resolve, 500));
 
-  /*let promiseFoundations = safeFetchJson(new URL('foundations', baseServerURL))
-    .then(result => {
-      console.log(result);
-      result.forEach(element => {
-        let promiseFoundationDetails = fetchIngredient('foundations', element)
-          .then(result => {
-            inventory[element] = {...result};
-            console.log(inventory);
-          });
-      });
-      return result;
-    }); */
   let myPromises = [];
   myPromises.push(fetchIngredientType('foundations', inventory));
   myPromises.push(fetchIngredientType('extras', inventory));
   myPromises.push(fetchIngredientType('proteins', inventory));
   myPromises.push(fetchIngredientType('dressings', inventory));
-  
-
 
   return await Promise.all(myPromises).then( _ => {
     return inventory;
@@ -69,13 +56,18 @@ function safeFetchJson(url) {
     });
 }
 
+
 const router = createBrowserRouter([
   {
     element: <App />,
     children: [
       {
         index: true,
-        element: <h2>Välkommen!</h2>
+        element:
+        <div>
+          <h2>Välkommen!</h2>
+          <Spinner />
+        </div>
       },
       {
         path: "compose-salad",

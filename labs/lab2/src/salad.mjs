@@ -96,7 +96,19 @@ class Order {
     delete this.saladList[saladUUID];
     return this;
   };
+
+  
 };
+
+Order.prototype.arrayFromOrder = function() {
+  let array = [];
+  Object.values(this.saladList)
+  .forEach( element => {
+    array.push(Object.keys(element.ingredients));
+  })
+  
+  return array;
+}
 
 Order.prototype.getPrice = function() {
   const salads = Object.values(this.saladList);
