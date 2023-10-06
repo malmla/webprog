@@ -10,30 +10,6 @@ import Spinner from "./Spinner";
 
 const baseServerURL = "http://localhost:8080";
 
-async function inventoryLoaderChain() {
-  const inventory = { Sallad: { price: 10, foundation: true, vegan: true } };
-  const ingredientTypes = ['foundations', 'proteins', 'dressings', 'extras'];
-  //await new Promise(resolve => setTimeout(resolve, 500));
-
-  function loadIngredientDetails(typ, ingredient) {
-    return safeFetchJson(new URL(typ + '/' + ingredient, baseServerURL))
-    .then( detail => {
-      inventory[ingredient] = {...detail};
-    });
-  }
-
-  ingredientTypes.forEach(type => {
-    safeFetchJson(new URL(type, baseServerURL))
-    .then(result => {
-      result.forEach(ingredient => {
-        loadIngredientDetails(type, ingredient);
-      })
-    })
-  })
-
-  return inventory;
-}
-
 async function inventoryLoader() {
   const inventory = { Sallad: { price: 10, foundation: true, vegan: true } };
   await new Promise(resolve => setTimeout(resolve, 500));
@@ -44,15 +20,15 @@ async function inventoryLoader() {
 
   async function fetchIngredientType (ingredientType, inventory) {
     let promises = [];
-    safeFetchJson(new URL(ingredientType, baseServerURL))
+    await safeFetchJson(new URL(ingredientType, baseServerURL))
     .then(result => {
       result.forEach(element => {
-        let promise = fetchIngredient(ingredientType, element);
-        promise.then(details => {
+        let promise = fetchIngredient(ingredientType, element)
+        .then(details => {
           inventory[element] = {...details};
         });
   
-        promises.push({[element]: promise});
+        promises.push(promise);
       });
     })
   
@@ -92,7 +68,7 @@ const router = createBrowserRouter([
       {
         index: true,
         element:
-        <div>
+        <div className="m">
           <h2>Välkommen!</h2>
           <Spinner />
         </div>

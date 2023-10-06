@@ -4,7 +4,6 @@ import { Order } from "./salad.mjs";
 import { Toast } from "bootstrap";
 
 function ViewOrder (props) {
-  const toastConfirmation = document.getElementById('liveToast');
   const removeSaladOrder = useOutletContext()['removeSaladOrder'];
   const order = useOutletContext()['order'];
   const setOrder = useOutletContext()['setOrderWrapper'];
@@ -26,6 +25,7 @@ function ViewOrder (props) {
       console.log("Success:", result);
       setConfirmations(confirmations.push(result));
 
+      const toastConfirmation = document.getElementById('liveToast');
       const toastBootstrap = Toast.getOrCreateInstance(toastConfirmation);
       toastBootstrap.show();
       // hjälp
