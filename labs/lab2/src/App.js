@@ -2,7 +2,7 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 //import inventory from './inventory.mjs';
-import { Order } from './salad.mjs'
+import { Order, Salad } from './salad.mjs'
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 //import ComposeSalad from './ComposeSalad'
@@ -11,7 +11,8 @@ import { NavLink, Outlet } from 'react-router-dom';
 
 function App() {
   const [order, setOrder] = useState(new Order());
-
+  let jsonOrder = window.localStorage.getItem('order');
+  setOrder(fetchFromLocalStorage(jsonOrder));
   /* function addSaladOrder(saladForm) {
     const salad = new Salad();
 
@@ -31,7 +32,16 @@ function App() {
   function removeSaladOrder(e) {
     const newOrder = new Order(order.uuidOrder, order.saladList);
     newOrder.removeSalad(e.target.value);
-    setOrder(newOrder);
+    setOrderWrapper(newOrder);
+  }
+
+  function fetchFromLocalStorage (jsonOrder) {
+    let sallads = Salad.parse(jsonOrder);
+    let salladList = {};
+    sallads.forEach( sallad => {
+      sallad = new Salad(sallad, undefined, sallad.uuid);
+      salladList[sallad.uuid] = sallad;
+    });
   }
 
   function Header() {
@@ -75,12 +85,19 @@ function App() {
       </nav>);    
   }
 
+  function setOrderWrapper(newOrder) {
+    let orderToStore = new Order(newOrder.uuidOrder, newOrder.saladList);
+    setOrder(orderToStore);
+    window.localStorage.clear(); //funkar då vi bara sparar senaste order
+    window.localStorage.setItem('order', JSON.stringify(Object.values(orderToStore.saladList)));
+  }
+
   return (
     <div className="container py-4">
       <Header />
       <Navbar />
 
-      <Outlet context={{order, setOrder, removeSaladOrder}}/>
+      <Outlet context={{order, setOrderWrapper, removeSaladOrder}}/>
 
       {/**<ViewOrder saladOrders={order} removeSaladOrder={removeSaladOrder} />
       <ComposeSalad inventory={inventory} addSaladOrder={addSaladOrder} /> **/}

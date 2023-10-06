@@ -7,7 +7,7 @@ class Salad {
     uuid;
   
     constructor(salad, oldID, oldUUID) {
-      salad && salad instanceof Salad ? this.ingredients = {...salad.ingredients} : this.ingredients = {}; //todo spread ist för this =
+      salad ? this.ingredients = {...salad.ingredients} : this.ingredients = {}; //todo spread ist för this =
       this.id = oldID || `salad_` + Salad.#instanceCounter++;
       const uuid = oldUUID || uuidv4();
       this.uuid = uuid;

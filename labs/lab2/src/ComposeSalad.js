@@ -9,7 +9,7 @@ function ComposeSalad(props) {
   const [dressing, setDressing] = useState("");
   const [extras, setExtra] = useState(new Set());
   const order = useOutletContext()['order'];
-  const setOrder = useOutletContext()['setOrder'];
+  const setOrder = useOutletContext()['setOrderWrapper'];
   const inventory = useLoaderData();
   const navigate = useNavigate();
 
