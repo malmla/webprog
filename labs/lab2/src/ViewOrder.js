@@ -12,7 +12,6 @@ function ViewOrder (props) {
   const navigate = useNavigate();
   const [confirmations, setConfirmations] = useState([]);
 
-  
   async function postJSON(data) {
     try {
       const response = await fetch("http://localhost:8080/orders/", {
@@ -29,6 +28,7 @@ function ViewOrder (props) {
 
       const toastBootstrap = Toast.getOrCreateInstance(toastConfirmation);
       toastBootstrap.show();
+      // hjälp
 
     } catch (error) {
       console.error("Error:", error);

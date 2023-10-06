@@ -94,7 +94,7 @@ function App() {
     let orderToStore = new Order(newOrder.uuidOrder, newOrder.saladList);
     window.localStorage.clear(); //funkar då vi bara sparar senaste order
     window.localStorage.setItem('order', JSON.stringify(Object.values(orderToStore.saladList)));
-    return setOrder(orderToStore);
+    return setOrder(orderToStore); //glömde först att returnera detta, fick to many re-render?
   }
 
   return (
