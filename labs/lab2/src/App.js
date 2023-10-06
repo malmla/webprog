@@ -10,9 +10,23 @@ import { NavLink, Outlet } from 'react-router-dom';
 
 
 function App() {
-  const [order, setOrder] = useState(new Order());
-  let jsonOrder = window.localStorage.getItem('order');
-  setOrder(fetchFromLocalStorage(jsonOrder));
+  const [order, setOrder] = useState(initOrder());
+
+  function initOrder() {
+    let jsonOrder = window.localStorage.getItem('order');
+    if (jsonOrder === null) {
+      return new Order();
+    }
+    let sallads = Salad.parse(jsonOrder);
+    let salladList = {};
+    sallads.forEach( e => {
+      e = new Salad(e, undefined, e.uuid);
+      salladList[e.uuid] = e;
+    });
+
+    return new Order(null, salladList);
+  }
+
   /* function addSaladOrder(saladForm) {
     const salad = new Salad();
 
@@ -33,15 +47,6 @@ function App() {
     const newOrder = new Order(order.uuidOrder, order.saladList);
     newOrder.removeSalad(e.target.value);
     setOrderWrapper(newOrder);
-  }
-
-  function fetchFromLocalStorage (jsonOrder) {
-    let sallads = Salad.parse(jsonOrder);
-    let salladList = {};
-    sallads.forEach( sallad => {
-      sallad = new Salad(sallad, undefined, sallad.uuid);
-      salladList[sallad.uuid] = sallad;
-    });
   }
 
   function Header() {
@@ -87,9 +92,9 @@ function App() {
 
   function setOrderWrapper(newOrder) {
     let orderToStore = new Order(newOrder.uuidOrder, newOrder.saladList);
-    setOrder(orderToStore);
     window.localStorage.clear(); //funkar då vi bara sparar senaste order
     window.localStorage.setItem('order', JSON.stringify(Object.values(orderToStore.saladList)));
+    return setOrder(orderToStore);
   }
 
   return (

@@ -56,7 +56,6 @@ function safeFetchJson(url) {
     });
 }
 
-
 const router = createBrowserRouter([
   {
     element: <App />,
