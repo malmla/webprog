@@ -1,16 +1,18 @@
 import { Outlet, useNavigate, useOutletContext } from "react-router-dom";
 import { useState } from 'react';
 import { Order } from "./salad.mjs";
-import Toaster from "./Toaster";
+import { Toast } from "bootstrap";
 
 function ViewOrder (props) {
+  const toastConfirmation = document.getElementById('liveToast');
   const removeSaladOrder = useOutletContext()['removeSaladOrder'];
   const order = useOutletContext()['order'];
-  const setOrder = useOutletContext()['setOrder'];
+  const setOrder = useOutletContext()['setOrderWrapper'];
   //const order = new Order(orderContext.uuidOrder, orderContext.saladList);
   const navigate = useNavigate();
   const [confirmations, setConfirmations] = useState([]);
 
+  
   async function postJSON(data) {
     try {
       const response = await fetch("http://localhost:8080/orders/", {
@@ -24,7 +26,10 @@ function ViewOrder (props) {
       const result = await response.json();
       console.log("Success:", result);
       setConfirmations(confirmations.push(result));
-      console.log(confirmations);
+
+      const toastBootstrap = Toast.getOrCreateInstance(toastConfirmation);
+      toastBootstrap.show();
+
     } catch (error) {
       console.error("Error:", error);
     }
@@ -41,6 +46,7 @@ function ViewOrder (props) {
     postJSON(sallads);
     setOrder(new Order());
     navigate('../view-order');
+
     //trigga toaster
   }
 
@@ -80,8 +86,21 @@ function ViewOrder (props) {
         Beställ
       </button>
 
-      <Toaster />
-    </div>
+      
+      <div className="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" className="toast" role="alert" aria-live="assertive" aria-atomic="true">
+          <div className="toast-header">
+            <img src="..." className="rounded me-2" alt="..."/>
+            <strong className="me-auto">Saladbar</strong>
+            <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+          </div>
+          <div className="toast-body">
+            Tack för din beställning.
+          </div>
+        </div>
+      </div>
+
+      </div>
   </div>
   );
 }
