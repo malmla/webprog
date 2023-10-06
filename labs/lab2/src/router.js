@@ -10,9 +10,55 @@ import Spinner from "./Spinner";
 
 const baseServerURL = "http://localhost:8080";
 
+async function inventoryLoaderChain() {
+  const inventory = { Sallad: { price: 10, foundation: true, vegan: true } };
+  const ingredientTypes = ['foundations', 'proteins', 'dressings', 'extras'];
+  //await new Promise(resolve => setTimeout(resolve, 500));
+
+  function loadIngredientDetails(typ, ingredient) {
+    return safeFetchJson(new URL(typ + '/' + ingredient, baseServerURL))
+    .then( detail => {
+      inventory[ingredient] = {...detail};
+    });
+  }
+
+  ingredientTypes.forEach(type => {
+    safeFetchJson(new URL(type, baseServerURL))
+    .then(result => {
+      result.forEach(ingredient => {
+        loadIngredientDetails(type, ingredient);
+      })
+    })
+  })
+
+  return inventory;
+}
+
 async function inventoryLoader() {
   const inventory = { Sallad: { price: 10, foundation: true, vegan: true } };
   await new Promise(resolve => setTimeout(resolve, 500));
+
+  async function fetchIngredient(type, ingredient) {
+    return await safeFetchJson(new URL(type + '/' + ingredient, baseServerURL));
+  }
+
+  async function fetchIngredientType (ingredientType, inventory) {
+    let promises = [];
+    safeFetchJson(new URL(ingredientType, baseServerURL))
+    .then(result => {
+      result.forEach(element => {
+        let promise = fetchIngredient(ingredientType, element);
+        promise.then(details => {
+          inventory[element] = {...details};
+        });
+  
+        promises.push({[element]: promise});
+      });
+    })
+  
+    //console.log(promises);
+    return await Promise.all(promises);
+  }
 
   let myPromises = [];
   myPromises.push(fetchIngredientType('foundations', inventory));
@@ -20,31 +66,14 @@ async function inventoryLoader() {
   myPromises.push(fetchIngredientType('proteins', inventory));
   myPromises.push(fetchIngredientType('dressings', inventory));
 
-  return await Promise.all(myPromises).then( _ => {
+  await Promise.all(myPromises);
+
+  return inventory;
+
+  /* return await Promise.all(myPromises).then( _ => {
     return inventory;
-  });
-}
-
-function fetchIngredientType (ingredientType, inventory) {
-  let promises = [];
-  safeFetchJson(new URL(ingredientType, baseServerURL))
-  .then(result => {
-    result.forEach(element => {
-      let promise = fetchIngredient(ingredientType, element);
-      promise.then(details => {
-        inventory[element] = {...details};
-      });
-
-      promises.push({[element]: promise});
-    });
-  })
-
-  return Promise.all(promises);
-}
-
-async function fetchIngredient(type, ingredient) {
-  return await safeFetchJson(new URL(type + '/' + ingredient, baseServerURL));
-}
+  }); */
+} //varför laddar den bara salladen först och sen det andra?
 
 function safeFetchJson(url) {
   return fetch(url)
