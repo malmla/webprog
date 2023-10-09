@@ -6,20 +6,20 @@ import ComposeSalad from "./ComposeSalad";
 import ViewOrder from "./ViewOrder";
 import Confirm from "./Confirm";
 import ViewIngredient from "./ViewIngredient";
-import Spinner from "./Spinner";
+//import Spinner from "./Spinner";
 
 const baseServerURL = "http://localhost:8080";
 
 async function inventoryLoader() {
   const inventory = { Sallad: { price: 10, foundation: true, vegan: true } };
-  await new Promise(resolve => setTimeout(resolve, 500));
+  //await new Promise(resolve => setTimeout(resolve, 500));
 
   async function fetchIngredient(type, ingredient) {
     return await safeFetchJson(new URL(type + '/' + ingredient, baseServerURL));
   }
 
   async function fetchIngredientType (ingredientType, inventory) {
-    let promises = [];
+    let promises = [];// anv map ist för for each
     await safeFetchJson(new URL(ingredientType, baseServerURL))
     .then(result => {
       result.forEach(element => {
@@ -27,29 +27,23 @@ async function inventoryLoader() {
         .then(details => {
           inventory[element] = {...details};
         });
-  
         promises.push(promise);
       });
     })
-  
     //console.log(promises);
     return await Promise.all(promises);
   }
 
-  let myPromises = [];
-  myPromises.push(fetchIngredientType('foundations', inventory));
-  myPromises.push(fetchIngredientType('extras', inventory));
-  myPromises.push(fetchIngredientType('proteins', inventory));
-  myPromises.push(fetchIngredientType('dressings', inventory));
-
+  let myPromises = [
+  fetchIngredientType('foundations', inventory),
+  fetchIngredientType('extras', inventory),
+  fetchIngredientType('proteins', inventory),
+  fetchIngredientType('dressings', inventory)
+  ];
   await Promise.all(myPromises);
 
   return inventory;
-
-  /* return await Promise.all(myPromises).then( _ => {
-    return inventory;
-  }); */
-} //varför laddar den bara salladen först och sen det andra?
+}
 
 function safeFetchJson(url) {
   return fetch(url)
@@ -70,7 +64,6 @@ const router = createBrowserRouter([
         element:
         <div className="m">
           <h2>Välkommen!</h2>
-          <Spinner />
         </div>
       },
       {

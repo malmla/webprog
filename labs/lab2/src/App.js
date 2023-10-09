@@ -5,12 +5,13 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 import { Order, Salad } from './salad.mjs'
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
+import Spinner from './Spinner';
 //import ComposeSalad from './ComposeSalad'
 //import ViewOrder from './ViewOrder';
 
 
 function App() {
-  const [order, setOrder] = useState(initOrder());
+  const [order, setOrder] = useState(initOrder);// till skilnad från init() (langa funktionen ist för värdet -> körs en gång)
 
   function initOrder() {
     let jsonOrder = window.localStorage.getItem('order');
@@ -92,7 +93,7 @@ function App() {
 
   function setOrderWrapper(newOrder) {
     let orderToStore = new Order(newOrder.uuidOrder, newOrder.saladList);
-    window.localStorage.clear(); //funkar då vi bara sparar senaste order
+    //window.localStorage.clear(); //undvik om jag har flera nycklar, varje skrivning till en nyckel skriver ändå över
     window.localStorage.setItem('order', JSON.stringify(Object.values(orderToStore.saladList)));
     return setOrder(orderToStore); //glömde först att returnera detta, fick to many re-render?
   }
@@ -101,6 +102,7 @@ function App() {
     <div className="container py-4">
       <Header />
       <Navbar />
+      <Spinner />
 
       <Outlet context={{order, setOrderWrapper, removeSaladOrder}}/>
 

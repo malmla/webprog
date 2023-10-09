@@ -46,8 +46,6 @@ function ViewOrder (props) {
     postJSON(sallads);
     setOrder(new Order());
     navigate('../view-order');
-
-    //trigga toaster
   }
 
   return (
